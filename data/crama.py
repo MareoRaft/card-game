@@ -10,3 +10,5 @@ print('back to normal now')
 
 from string import string
 print(string)
+
+# and now we need 256 color support
