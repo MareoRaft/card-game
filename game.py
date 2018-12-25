@@ -11,8 +11,19 @@ import colorama
 from utils import validate_python_version
 from decorate import read_only
 
-from data.pystring.queen import s as queen_string
+card_strings = {}
+for face_value in range(MIN_FACE_VALUE, MAX_FACE_VALUE + 1):
+	for suit in range(MIN_SUIT, MAX_SUIT + 1):
+		card_id = '{}-{}'.format(face_value, suit)
+		import_path = 'data.pystring.{}'.format(card_id)
+		module = __import__(import_path, fromlist=[''])
+		card_strings[card_id] = module.s
 
+MIN_FACE_VALUE = 2
+MAX_FACE_VALUE = 14
+
+MIN_SUIT = 1
+MAX_SUIT = 4
 
 MIN_PLAYERS = 2
 MAX_PLAYERS = 4
@@ -33,7 +44,8 @@ class Card:
 
 	def __str__(self):
 		""" Pretty string version of the card for the user. """
-		return '({}, {})'.format(self.face_value, self.suit)
+		card_id = '{}-{}'.format(self.face_value, self.suit)
+		return card_strings[card_id]
 
 	@property
 	def face_value(self):
@@ -42,7 +54,7 @@ class Card:
 	@read_only
 	def face_value(self, new_face_value):
 		# jack is 11, queen 12, king 13, ace is 14
-		if not (2 <= face_value <= 14):
+		if not (MIN_FACE_VALUE <= face_value <= MAX_FACE_VALUE):
 			raise ValueError
 		self._face_value = new_face_value
 
@@ -53,7 +65,7 @@ class Card:
 	@read_only
 	def suit(self, new_suit):
 		# club is 1, diamond is 2, heart 3, spade 4
-		if not (1 <= suit <= 4):
+		if not (MIN_SUIT <= suit <= MAX_SUIT):
 			raise ValueError
 		self._suit = new_suit
 
@@ -244,5 +256,4 @@ if __name__ == '__main__':
 	# make color codes work on windows too
 	colorama.init()
 	# finally, play!
-	print(queen_string)
-	# game()
+	game()
