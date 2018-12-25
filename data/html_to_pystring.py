@@ -28,6 +28,13 @@ string = re.sub(
 	r" \+ </span></code>'\\n' \+ ",
 	r"",
 	string)
+## condense white things to save space
+string = re.sub(r"""fg\(255, 255, 255\)""", "fg.white", string)
+for _ in range(9):
+	string = re.sub(
+		r"""fg\.white \+ '([^']+)' \+ fg\.white \+ '([^']+)'""",
+		r"fg.white + '\1\2'",
+		string)
 
 # output
 open(out_path, 'w').write(string)

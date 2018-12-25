@@ -1,15 +1,18 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 # builtin imports
 from __future__ import print_function
 import random
 
 # third-party imports
-# none here
+import colorama
 
 # local imports
 from utils import validate_python_version
 from decorate import read_only
+
+from data.pystring.queen import s as queen_string
+
 
 MIN_PLAYERS = 2
 MAX_PLAYERS = 4
@@ -238,4 +241,8 @@ def game():
 if __name__ == '__main__':
 	# TODO: possibly make a 'main.py' which does the manage python version, or maybe not
 	validate_python_version()
-	game()
+	# make color codes work on windows too
+	colorama.init()
+	# finally, play!
+	print(queen_string)
+	# game()
