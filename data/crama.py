@@ -12,3 +12,7 @@ from string import string
 print(string)
 
 # and now we need 256 color support
+import sty
+from sty import fg, bg, ef, rs, Rule, Render
+
+
