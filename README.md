@@ -6,7 +6,11 @@ Object-Oriented approach.
 
 ## Installation
 
-TLDR: **[Python 2.7](https://www.python.org/downloads/release/python-2715/)** and [prompt_toolkit](https://pypi.org/project/prompt_toolkit/#files) are the only dependencies.
+TLDR: Dependencies are
+
+  * **[Python 2.7](https://www.python.org/downloads/release/python-2715/)**
+  * [prompt_toolkit](https://pypi.org/project/prompt_toolkit/#files)
+  * [colorama](https://pypi.org/project/colorama/#files)
 
 In detail...
 
@@ -24,14 +28,4 @@ Simply run the `game.py` script.  For example:
     ./game.py
 
 
-
-
-
-
-todos:
-  * do some http://picascii.com or https://www.text-image.com/convert/pic2ascii.cgi for awesome card art
-
-cleanup todos:
-  * autopep8
-  * put classes into separate file(s)
 

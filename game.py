@@ -78,7 +78,12 @@ class Deck:
 	""" A deck of cards. """
 	def __init__(self, cards):
 		""" A 'new' deck is basically a list of cards (the `cards` given).  They are intentionally *not* shuffled on init because you might want your deck to be in a specific order. """
-		self._cards = cards
+		self._original_cards = cards
+		self.replenish()
+
+	def replenish(self):
+		""" Restore the deck to its original state. """
+		self._cards = self._original_cards
 
 	def shuffle(self):
 		""" Shuffles the cards currently in the deck with uniform probability. """
@@ -138,11 +143,21 @@ def turn(deck, player):
 	print('It is player {}\'s turn!'.format(player.name))
 	# player must press a key to draw card
 	raw_input('press any key to draw')
-	card = deck.draw()
+	# draw card
+	try:
+		card = deck.draw()
+	except IndexError:
+		# in the rare case that the deck is empty, take the discard pile and shuffle it
+		print('reshuffling the discard pile.')
+		discarded_cards = set(deck._original_cards) - set(p.card for p in players)
+		deck.__init__(discarded_cards)
+		deck.shuffle()
+		card = deck.draw()
 	# show the card for all to see
 	print('player {} draws card {}.'.format(player.name, card))
-	# put card in hand
+	# put card in hand 
 	player.draw(card)
+
 
 def adjust_player_scores(players):
 	penalty_players = [p for p in players if is_penalty_card(p.card)]
