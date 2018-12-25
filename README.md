@@ -8,15 +8,10 @@ Object-Oriented approach.
 
 TLDR: Dependencies are
 
-  * **[Python 2.7](https://www.python.org/downloads/release/python-2715/)**
+  * **[Python 3.7](https://www.python.org/downloads/release/python-372/)**
   * [prompt_toolkit](https://pypi.org/project/prompt_toolkit/#files)
   * [colorama](https://pypi.org/project/colorama/#files)
-
-In detail...
-
-While I personally prefer the newest version of Python, for this submission I have chosen Python 2.7 because it ships out-of-the-box with almost any laptop or desktop you could buy.
-
-But if for some reason `python --version` does not output something like `Python 2.7.x`, you may need to download the appropriate installer at [python.org](https://www.python.org/downloads/release/python-2715/) and run it.
+  * [sty](https://github.com/feluxe/sty)
 
 
 
