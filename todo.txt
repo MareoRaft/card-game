@@ -1,0 +1,4 @@
+2. move classes into own file
+1. tree of project structure
+3. quick explanation of project structure
+4. maybe awesome picture of queen art?

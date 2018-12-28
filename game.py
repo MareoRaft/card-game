@@ -10,6 +10,8 @@ import colorama
 # local imports
 from utils import validate_python_version
 from decorate import read_only
+from classes import PenaltyCard, Card, Deck, Player
+from config import MIN_FACE_VALUE, MAX_FACE_VALUE, MIN_SUIT, MIN_PLAYERS, MAX_PLAYERS
 
 card_strings = {}
 for face_value in range(MIN_FACE_VALUE, MAX_FACE_VALUE + 1):
@@ -19,130 +21,10 @@ for face_value in range(MIN_FACE_VALUE, MAX_FACE_VALUE + 1):
 		module = __import__(import_path, fromlist=[''])
 		card_strings[card_id] = module.s
 
-MIN_FACE_VALUE = 2
-MAX_FACE_VALUE = 14
-
-MIN_SUIT = 1
-MAX_SUIT = 4
-
-MIN_PLAYERS = 2
-MAX_PLAYERS = 4
-
-
-class PenaltyCard:
-	""" A penalty card. """
-	def __str__(self):
-		""" Pretty string version of the card for the user. """
-		return 'a penalty card'
-	
-
-class Card:
-	def __init__(self, face_value, suit):
-		""" `face_value` is any integer from 2 to 14, inclusive.  `suit` is any integer from 1 to 4, inclusive. """
-		self.face_value = face_value
-		self.suit = suit
-
-	def __str__(self):
-		""" Pretty string version of the card for the user. """
-		card_id = '{}-{}'.format(self.face_value, self.suit)
-		return card_strings[card_id]
-
-	@property
-	def face_value(self):
-		return self._face_value
-	@face_value.setter
-	@read_only
-	def face_value(self, new_face_value):
-		# jack is 11, queen 12, king 13, ace is 14
-		if not (MIN_FACE_VALUE <= face_value <= MAX_FACE_VALUE):
-			raise ValueError
-		self._face_value = new_face_value
-
-	@property
-	def suit(self):
-		return self._suit
-	@suit.setter
-	@read_only
-	def suit(self, new_suit):
-		# club is 1, diamond is 2, heart 3, spade 4
-		if not (MIN_SUIT <= suit <= MAX_SUIT):
-			raise ValueError
-		self._suit = new_suit
-
-	# implement an ordering on the cards
-	def __eq__(self, other):
-		return self.face_value == other.face_value and self.suit == other.suit
-
-	def __lt__(self, other):
-		return self.face_value < other.face_value or self.suit < other.suit
-
-	# the rest of the orderings depends on the previous ones.  i don't know which of these are automatic and which i actually need to implement.  so maybe we can delete some of these...
-	def __leq__(self, other):
-		return self < other or self == other
-
-	def __gt__(self, other):
-		return not self <= other
-
-	def __geq__(self, other):
-		return self > other or self == other
-
-	# i wonder if there was a nicer way to do this, like saying "standard ordering on (self.face_value, self.suit)"
-
-
-class Deck:
-	""" A deck of cards. """
-	def __init__(self, cards):
-		""" A 'new' deck is basically a list of cards (the `cards` given).  They are intentionally *not* shuffled on init because you might want your deck to be in a specific order. """
-		self._original_cards = cards
-		self.replenish()
-
-	def replenish(self):
-		""" Restore the deck to its original state. """
-		self._cards = self._original_cards
-
-	def shuffle(self):
-		""" Shuffles the cards currently in the deck with uniform probability. """
-		random.shuffle(self._cards)
-
-	def draw(self):
-		""" Draw a card from the deck and return it. """
-		return self._cards.pop()
-
-
-class Player:
-	def __init__(self, name):
-		self._name = name
-		self._score = 0
-		self.card = None
-
-	@property
-	def name(self):
-		return self._name
-
-	@property
-	def score(self):
-		return self._score
-
-	def adjust_score(self, adjustment):
-		if not isinstance(adjustment, int):
-			raise TypeError
-		# adjust score
-		self._score += adjustment
-		# the score cannot go below 0
-		self._score = max(0, self._score)
-
-	def draw(self, card):
-		# add `card` to player's hand
-		self.card = card
-
-	def discard(self):
-		self.card = None
-
-
 def is_penalty_card(card):
 	if card is None:
 		raise ValueError
-	return isinstance(card, PenaltyCard)
+	return 
 
 def output_scoreboard(players):
 	output = 'And the current rankings are...(drumroll please)...\n'
@@ -173,19 +55,20 @@ def turn(deck, player):
 	# put card in hand 
 	player.draw(card)
 
-
 def adjust_player_scores(players):
-	penalty_players = [p for p in players if is_penalty_card(p.card)]
-	non_penalty_players = [p for p in players if not is_penalty_card(p.card)]
-	# 1 point penalty for penalty card players
+	penalty_players = [p for p in players if isinstance(card, PenaltyCard)]
+	non_penalty_players = [p for p in players if not isinstance(card, PenaltyCard)]
+	# 1 point penalty for players with penalty card
 	for penalty_player in penalty_players:
 			penalty_player.adjust_score(-1)
-	# 2 points for player with highest ranked card
-	# note: We take advantage of the fact that the cards are linearly ordered and there are no duplicates.
-	max_card = max(p.card for p in non_penalty_players)
-	for player in players:
-		if player.card == max_card:
-			player.adjust_score(2)
+	# 2 points for player(s) with highest ranked card
+	# note: The 'if' statement is necessary because it is possible that all players draw penalty cards, in which case you cannot get a max.
+	if non_penalty_players:
+		max_card = max(p.card for p in non_penalty_players)
+		for non_penalty_player in non_penalty_players:
+			# note: If we were dealing with a deck that had multiple cards of the same value, more than one player could get the 2-point bonus.
+			if non_penalty_player.card == max_card:
+				non_penalty_player.adjust_score(2)
 
 def round(deck, players):
 	""" A round consists of each player drawing a card and then a scoreboard update. """
