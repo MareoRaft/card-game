@@ -1,7 +1,7 @@
 import random
 
 from lib.decorate import read_only
-from lib.config import MIN_FACE_VALUE, MAX_FACE_VALUE, MIN_SUIT, MAX_SUIT, MIN_PLAYERS, MAX_PLAYERS
+from lib import validate
 from data.strings.image_strings import card_image_strings
 
 
@@ -14,14 +14,14 @@ class PenaltyCard:
 	
 
 class Card:
-	def __init__(self, face_value, suit):
-		""" `face_value` is any integer from 2 to 14, inclusive.  `suit` is any integer from 1 to 4, inclusive. """
+	def __init__(self, face_value, suit_value):
+		""" `face_value` is any integer from 2 to 14, inclusive.  `suit_value` is any integer from 1 to 4, inclusive. """
 		self.face_value = face_value
-		self.suit = suit
+		self.suit_value = suit_value
 
 	def __str__(self):
 		""" Pretty string version of the card for the user. """
-		card_id = '{}-{}'.format(self.face_value, self.suit)
+		card_id = '{}-{}'.format(self.face_value, self.suit_value)
 		return card_image_strings[card_id]
 
 	@property
@@ -31,31 +31,29 @@ class Card:
 	@read_only
 	def face_value(self, new_face_value):
 		# jack is 11, queen 12, king 13, ace is 14
-		if not (MIN_FACE_VALUE <= new_face_value <= MAX_FACE_VALUE):
-			raise ValueError('face value must be between {} and {} inclusive'.format(MIN_FACE_VALUE, MAX_FACE_VALUE))
+		validate.face_value(new_face_value)
 		self._face_value = new_face_value
 
 	@property
-	def suit(self):
-		return self._suit
-	@suit.setter
+	def suit_value(self):
+		return self._suit_value
+	@suit_value.setter
 	@read_only
-	def suit(self, new_suit):
+	def suit_value(self, new_suit_value):
 		# club is 1, diamond is 2, heart 3, spade 4
-		if not (MIN_SUIT <= new_suit <= MAX_SUIT):
-			raise ValueError('bad suit value')
-		self._suit = new_suit
+		validate.suit_value(new_suit_value)
+		self._suit_value = new_suit_value
 
 	# implement an ordering on the cards
-	# i wonder if there's a nicer way to do this, like saying "standard ordering on (self.face_value, self.suit)"
+	# i wonder if there's a nicer way to do this, like saying "standard ordering on (self.face_value, self.suit_value)"
 	def __eq__(self, other):
-		return (self.face_value, self.suit) == (other.face_value, other.suit)
+		return (self.face_value, self.suit_value) == (other.face_value, other.suit_value)
 
 	def __ne__(self, other):
 		return not self == other
 
 	def __lt__(self, other):
-		return (self.face_value, self.suit) < (other.face_value, other.suit)
+		return (self.face_value, self.suit_value) < (other.face_value, other.suit_value)
 
 	def __le__(self, other):
 		return self < other or self == other
@@ -102,8 +100,7 @@ class Player:
 		return self._score
 
 	def adjust_score(self, adjustment):
-		if not isinstance(adjustment, int):
-			raise TypeError
+		validate.score_adjustment(adjustment)
 		# adjust score
 		self._score += adjustment
 		# the score cannot go below 0

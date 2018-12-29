@@ -45,9 +45,8 @@ def main():
 	open(out_path, 'w').write(header)
 	# generate the strings and write them to the file
 	for in_file_name in os.listdir(in_dir_path):
-		root, ext = path.splitext(in_file_name)
+		card_id, ext = path.splitext(in_file_name)
 		if ext == '.html':
-			card_id = root[5:]
 			in_file_path = path.join(in_dir_path, in_file_name)
 			html = open(in_file_path).read()
 			pystring = html_to_pystring(html)

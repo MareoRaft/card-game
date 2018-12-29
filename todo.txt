@@ -11,3 +11,5 @@
 TypeError: '<' not supported between instances of 'Player' and 'Player' (should be solved by sort above)
   * maybe the same but for card too
   * get rid of the period after the cards
+  * make a colorful python prompt (>>>) in blue, orange, red; using the colors from the Queen card
+  * make default color blue for everthing else

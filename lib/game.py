@@ -3,8 +3,9 @@
 # third-party imports
 
 # local imports
+from lib.config import MIN_FACE_VALUE, MAX_FACE_VALUE, MIN_SUIT_VALUE, MAX_SUIT_VALUE, MIN_PLAYERS, MAX_PLAYERS
+from lib.utils import input_pretty, print_pretty
 from lib.classes import PenaltyCard, Card, Deck, Player
-from lib.config import MIN_FACE_VALUE, MAX_FACE_VALUE, MIN_SUIT, MAX_SUIT, MIN_PLAYERS, MAX_PLAYERS
 
 def output_scoreboard(players):
 	output = 'And the current rankings are...(drumroll please)...\n'
@@ -14,24 +15,24 @@ def output_scoreboard(players):
 		(_, player) = tuple_
 		rank = index + 1
 		output += '{}. {}, with a score of {}\n'.format(rank, player.name, player.score)
-	print(output)
+	print_pretty(output)
 
 def turn(deck, player):
-	print('It is player {}\'s turn!'.format(player.name))
+	print_pretty('It is player {}\'s turn!'.format(player.name))
 	# player must press a key to draw card
-	input('press any key to draw')
+	input_pretty('press any key to draw')
 	# draw card
 	try:
 		card = deck.draw()
 	except IndexError:
 		# in the rare case that the deck is empty, take the discard pile and shuffle it
-		print('reshuffling the discard pile.')
+		print_pretty('reshuffling the discard pile.')
 		discarded_cards = set(deck._original_cards) - set(p.card for p in players)
 		deck.__init__(discarded_cards)
 		deck.shuffle()
 		card = deck.draw()
 	# show the card for all to see
-	print('player {} draws card {}.'.format(player.name, card))
+	print_pretty('player {} draws card {}.'.format(player.name, card))
 	# put card in hand 
 	player.draw(card)
 
@@ -67,7 +68,7 @@ def input_num_players():
 	# set the number of players
 	while True:
 		try:
-			num_players = int(input('How many players?'))
+			num_players = int(input_pretty('How many players?'))
 			assert MIN_PLAYERS <= num_players <= MAX_PLAYERS
 			return num_players
 		except:
@@ -77,7 +78,7 @@ def input_player():
 	# TODO: use the PROMPT module
 	# TODO: make this loop like input_num_players when there's bad input
 	# setup a player
-	name = str(input('What is player\'s name?'))
+	name = str(input_pretty('What is player\'s name?'))
 	return Player(name)
 
 def leader(players):
@@ -96,9 +97,9 @@ def has_winner(players):
 def setup_game():
 	# set up the deck
 	penalty_cards = [PenaltyCard()] * 4
-	regular_cards = [Card(face_val, suit)
+	regular_cards = [Card(face_val, suit_value)
 							for face_val in range(MIN_FACE_VALUE, MAX_FACE_VALUE + 1)
-							for suit in range(MIN_SUIT, MAX_SUIT + 1)]
+							for suit_value in range(MIN_SUIT_VALUE, MAX_SUIT_VALUE + 1)]
 	cards = penalty_cards + regular_cards
 	deck = Deck(cards)
 	deck.shuffle()
@@ -114,4 +115,4 @@ def game():
 	while not has_winner(players):
 		round(deck, players)
 	winner = leader(players)
-	print('The winner is {}!!!'.format(winner))
+	print_pretty('The winner is {}!!!'.format(winner))

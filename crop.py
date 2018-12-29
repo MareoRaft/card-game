@@ -17,7 +17,7 @@ from PIL import Image
 img = Image.open('data/cards.png')
 for y_row in range(0, NUM_ROWS):
 	y_offset = y_row * HEIGHT
-	# the 'id' corresponds to the suit number
+	# the 'id' corresponds to the suit value
 	y_id = y_row + 1
 	for x_col in range(0, NUM_COLS):
 		x_offset = x_col * WIDTH
@@ -34,5 +34,5 @@ for y_row in range(0, NUM_ROWS):
 		# crop and save
 		img_cropped = img.crop((x_left, y_top, x_right, y_bottom))
 		card_id = '{}-{}'.format(x_id, y_id)
-		file_path = 'data/images/card-{}.png'.format(card_id)
+		file_path = 'data/images/{}.png'.format(card_id)
 		img_cropped.save(file_path)
