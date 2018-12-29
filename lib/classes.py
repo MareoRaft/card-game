@@ -87,6 +87,7 @@ class Deck:
 
 class Player:
 	def __init__(self, name):
+		validate.player_name(name)
 		self._name = name
 		self._score = 0
 		self.card = None

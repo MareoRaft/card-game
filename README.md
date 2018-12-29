@@ -16,10 +16,10 @@ TLDR: Dependencies are
 
 ## Usage
 
-Simply run the `game.py` script.  For example:
+Simply run the `main.py` script.  For example:
 
     cd card-game-matthew-lancellotti
-    ./game.py
+    ./main.py
 
 
 

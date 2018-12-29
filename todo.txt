@@ -13,3 +13,4 @@ TypeError: '<' not supported between instances of 'Player' and 'Player' (should 
   * get rid of the period after the cards
   * make a colorful python prompt (>>>) in blue, orange, red; using the colors from the Queen card
   * make default color blue for everthing else
+  * use a prompt module!

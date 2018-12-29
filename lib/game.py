@@ -3,36 +3,35 @@
 # third-party imports
 
 # local imports
-from lib.config import MIN_FACE_VALUE, MAX_FACE_VALUE, MIN_SUIT_VALUE, MAX_SUIT_VALUE, MIN_PLAYERS, MAX_PLAYERS
+from lib.config import NUM_PENALTY_CARDS, MIN_FACE_VALUE, MAX_FACE_VALUE, MIN_SUIT_VALUE, MAX_SUIT_VALUE, MIN_PLAYERS, MAX_PLAYERS
 from lib.utils import input_pretty, print_pretty
 from lib.classes import PenaltyCard, Card, Deck, Player
+from lib import validate
 
 def output_scoreboard(players):
-	output = 'And the current rankings are...(drumroll please)...\n'
-	descending = list(reversed(sorted((p.score, p) for p in players)))
-	# TODO: clean this up
-	for index, tuple_ in enumerate(descending):
-		(_, player) = tuple_
+	input_pretty('And the current rankings are...(drumroll please)...\npress RETURN to continue')
+	output = ''
+	descending_players = get_descending_players(players)
+	for index, player in enumerate(descending_players):
 		rank = index + 1
 		output += '{}. {}, with a score of {}\n'.format(rank, player.name, player.score)
 	print_pretty(output)
 
-def turn(deck, player):
-	print_pretty('It is player {}\'s turn!'.format(player.name))
+def turn(deck, player, players):
 	# player must press a key to draw card
-	input_pretty('press any key to draw')
+	input_pretty('It\'s {}\'s turn!\npress RETURN to draw'.format(player.name))
 	# draw card
 	try:
 		card = deck.draw()
 	except IndexError:
 		# in the rare case that the deck is empty, take the discard pile and shuffle it
-		print_pretty('reshuffling the discard pile.')
+		print_pretty('reshuffling the discard pile...')
 		discarded_cards = set(deck._original_cards) - set(p.card for p in players)
 		deck.__init__(discarded_cards)
 		deck.shuffle()
 		card = deck.draw()
 	# show the card for all to see
-	print_pretty('player {} draws card {}.'.format(player.name, card))
+	print_pretty('{} draws card\n{}'.format(player.name, card))
 	# put card in hand 
 	player.draw(card)
 
@@ -53,10 +52,11 @@ def adjust_player_scores(players):
 
 def round(deck, players):
 	""" A round consists of each player drawing a card and then a scoreboard update. """
+	print_pretty('Next round.')
 	# each player draws a card from the deck
 	for player in players:
-		turn(deck, player)
-	# adjust player scores
+		turn(deck, player, players)
+s	# adjust player scores
 	adjust_player_scores(players)
 	# discard hands
 	for player in players:
@@ -69,34 +69,34 @@ def input_num_players():
 	while True:
 		try:
 			num_players = int(input_pretty('How many players?'))
-			assert MIN_PLAYERS <= num_players <= MAX_PLAYERS
+			validate.num_players(num_players)
 			return num_players
-		except:
-			pass
+		except Exception as error_message:
+			print(error_message)
 
-def input_player():
-	# TODO: use the PROMPT module
-	# TODO: make this loop like input_num_players when there's bad input
+def input_player(num):
 	# setup a player
-	name = str(input_pretty('What is player\'s name?'))
-	return Player(name)
+	while True:
+		try:
+			name = str(input_pretty('What is player {}\'s name?'.format(num)))
+			return Player(name)
+		except Exception as error_message:
+			print(error_message)
 
-def leader(players):
-	# returns a player with a max score
-	# TODO: factor out this ordering of players, which happens 3 times in the program
-	ascending = list(sorted((p.score, p) for p in players))
-	return ascending[-1][1]
+def get_descending_players(players):
+	# returns players sorted, highest first
+	return list(sorted(players, key=lambda p: p.score, reverse=True))
 
 def has_winner(players):
 	""" Returns a boolean indicating whether or not a winner exists. """
-	ascending_scores = list(sorted(p.score for p in players))
-	max_score = ascending_scores[-1]
-	second_max_score = ascending_scores[-2]
+	descending_players = get_descending_players(players)
+	max_score = descending_players[0].score
+	second_max_score = descending_players[1].score
 	return (max_score >= 21) and (max_score >= second_max_score + 2)
 
 def setup_game():
 	# set up the deck
-	penalty_cards = [PenaltyCard()] * 4
+	penalty_cards = [PenaltyCard() for _ in range(NUM_PENALTY_CARDS)]
 	regular_cards = [Card(face_val, suit_value)
 							for face_val in range(MIN_FACE_VALUE, MAX_FACE_VALUE + 1)
 							for suit_value in range(MIN_SUIT_VALUE, MAX_SUIT_VALUE + 1)]
@@ -106,7 +106,7 @@ def setup_game():
 	# set the number of players
 	num_players = input_num_players()
 	# setup each player
-	players = [input_player() for _ in range(num_players)]
+	players = [input_player(index + 1) for index in range(num_players)]
 	return deck, players
 
 def game():
@@ -114,5 +114,5 @@ def game():
 	deck, players = setup_game()
 	while not has_winner(players):
 		round(deck, players)
-	winner = leader(players)
+	winner = get_descending_players(players)[0]
 	print_pretty('The winner is {}!!!'.format(winner))
