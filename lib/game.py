@@ -1,13 +1,10 @@
 # builtin imports
-from __future__ import print_function
-import random
 
 # third-party imports
 
 # local imports
 from lib.classes import PenaltyCard, Card, Deck, Player
 from lib.config import MIN_FACE_VALUE, MAX_FACE_VALUE, MIN_SUIT, MAX_SUIT, MIN_PLAYERS, MAX_PLAYERS
-from data.image_strings import card_image_strings
 
 def output_scoreboard(players):
 	output = 'And the current rankings are...(drumroll please)...\n'
@@ -22,7 +19,7 @@ def output_scoreboard(players):
 def turn(deck, player):
 	print('It is player {}\'s turn!'.format(player.name))
 	# player must press a key to draw card
-	raw_input('press any key to draw')
+	input('press any key to draw')
 	# draw card
 	try:
 		card = deck.draw()
@@ -39,8 +36,8 @@ def turn(deck, player):
 	player.draw(card)
 
 def adjust_player_scores(players):
-	penalty_players = [p for p in players if isinstance(card, PenaltyCard)]
-	non_penalty_players = [p for p in players if not isinstance(card, PenaltyCard)]
+	penalty_players = [p for p in players if isinstance(p.card, PenaltyCard)]
+	non_penalty_players = [p for p in players if not isinstance(p.card, PenaltyCard)]
 	# 1 point penalty for players with penalty card
 	for penalty_player in penalty_players:
 			penalty_player.adjust_score(-1)
@@ -70,7 +67,7 @@ def input_num_players():
 	# set the number of players
 	while True:
 		try:
-			num_players = int(raw_input('How many players?'))
+			num_players = int(input('How many players?'))
 			assert MIN_PLAYERS <= num_players <= MAX_PLAYERS
 			return num_players
 		except:
@@ -80,7 +77,7 @@ def input_player():
 	# TODO: use the PROMPT module
 	# TODO: make this loop like input_num_players when there's bad input
 	# setup a player
-	name = str(raw_input('What is player\'s name?'))
+	name = str(input('What is player\'s name?'))
 	return Player(name)
 
 def leader(players):
@@ -94,12 +91,14 @@ def has_winner(players):
 	ascending_scores = list(sorted(p.score for p in players))
 	max_score = ascending_scores[-1]
 	second_max_score = ascending_scores[-2]
-	return max_score >= 21 and max_score >= second_max_score + 2
+	return (max_score >= 21) and (max_score >= second_max_score + 2)
 
 def setup_game():
 	# set up the deck
 	penalty_cards = [PenaltyCard()] * 4
-	regular_cards = [Card(face_val, suit) for face_val in range(2, 14 + 1) for suit in range(1, 4 + 1)]
+	regular_cards = [Card(face_val, suit)
+							for face_val in range(MIN_FACE_VALUE, MAX_FACE_VALUE + 1)
+							for suit in range(MIN_SUIT, MAX_SUIT + 1)]
 	cards = penalty_cards + regular_cards
 	deck = Deck(cards)
 	deck.shuffle()
@@ -115,3 +114,4 @@ def game():
 	while not has_winner(players):
 		round(deck, players)
 	winner = leader(players)
+	print('The winner is {}!!!'.format(winner))

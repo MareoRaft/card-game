@@ -1,11 +1,16 @@
+import random
+
 from lib.decorate import read_only
-from lib.config import MIN_FACE_VALUE, MAX_FACE_VALUE, MIN_SUIT, MIN_PLAYERS, MAX_PLAYERS
+from lib.config import MIN_FACE_VALUE, MAX_FACE_VALUE, MIN_SUIT, MAX_SUIT, MIN_PLAYERS, MAX_PLAYERS
+from data.strings.image_strings import card_image_strings
+
 
 class PenaltyCard:
 	""" A penalty card. """
 	def __str__(self):
 		""" Pretty string version of the card for the user. """
-		return 'a penalty card'
+		# I chose the Joker image for the penalty card.
+		return card_image_strings['joker']
 	
 
 class Card:
@@ -17,7 +22,7 @@ class Card:
 	def __str__(self):
 		""" Pretty string version of the card for the user. """
 		card_id = '{}-{}'.format(self.face_value, self.suit)
-		return card_strings[card_id]
+		return card_image_strings[card_id]
 
 	@property
 	def face_value(self):
@@ -26,8 +31,8 @@ class Card:
 	@read_only
 	def face_value(self, new_face_value):
 		# jack is 11, queen 12, king 13, ace is 14
-		if not (MIN_FACE_VALUE <= face_value <= MAX_FACE_VALUE):
-			raise ValueError
+		if not (MIN_FACE_VALUE <= new_face_value <= MAX_FACE_VALUE):
+			raise ValueError('face value must be between {} and {} inclusive'.format(MIN_FACE_VALUE, MAX_FACE_VALUE))
 		self._face_value = new_face_value
 
 	@property
@@ -37,28 +42,29 @@ class Card:
 	@read_only
 	def suit(self, new_suit):
 		# club is 1, diamond is 2, heart 3, spade 4
-		if not (MIN_SUIT <= suit <= MAX_SUIT):
-			raise ValueError
+		if not (MIN_SUIT <= new_suit <= MAX_SUIT):
+			raise ValueError('bad suit value')
 		self._suit = new_suit
 
 	# implement an ordering on the cards
+	# i wonder if there's a nicer way to do this, like saying "standard ordering on (self.face_value, self.suit)"
 	def __eq__(self, other):
-		return self.face_value == other.face_value and self.suit == other.suit
+		return (self.face_value, self.suit) == (other.face_value, other.suit)
+
+	def __ne__(self, other):
+		return not self == other
 
 	def __lt__(self, other):
-		return self.face_value < other.face_value or self.suit < other.suit
+		return (self.face_value, self.suit) < (other.face_value, other.suit)
 
-	# the rest of the orderings depends on the previous ones.  i don't know which of these are automatic and which i actually need to implement.  so maybe we can delete some of these...
-	def __leq__(self, other):
+	def __le__(self, other):
 		return self < other or self == other
 
 	def __gt__(self, other):
 		return not self <= other
 
-	def __geq__(self, other):
-		return self > other or self == other
-
-	# i wonder if there was a nicer way to do this, like saying "standard ordering on (self.face_value, self.suit)"
+	def __ge__(self, other):
+		return not self < other
 
 
 class Deck:

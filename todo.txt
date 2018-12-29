@@ -2,3 +2,12 @@
 1. tree of project structure
 3. quick explanation of project structure
 4. maybe awesome picture of queen art?
+
+  * change 'suit' to 'suit value'
+  * put error messages (face val, suit) into their own file
+  * use the key= option in sort() function for cleaner sorting
+  * have a descending_players function that returns the players in order of their score
+  * list(reversed(sorted((p.score, p) for p in players)))
+TypeError: '<' not supported between instances of 'Player' and 'Player' (should be solved by sort above)
+  * maybe the same but for card too
+  * get rid of the period after the cards
