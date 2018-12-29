@@ -2,7 +2,6 @@
 info.md
 images/
 html/
-pystring/
 
 
 ### Python ###
@@ -22,7 +21,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+# lib/
 lib64/
 parts/
 sdist/

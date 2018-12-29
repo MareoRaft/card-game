@@ -1,4 +1,5 @@
-from config import MIN_FACE_VALUE, MAX_FACE_VALUE, MIN_SUIT, MIN_PLAYERS, MAX_PLAYERS
+from lib.decorate import read_only
+from lib.config import MIN_FACE_VALUE, MAX_FACE_VALUE, MIN_SUIT, MIN_PLAYERS, MAX_PLAYERS
 
 class PenaltyCard:
 	""" A penalty card. """

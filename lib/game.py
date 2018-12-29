@@ -1,30 +1,13 @@
-#!/usr/bin/env python3
-
 # builtin imports
 from __future__ import print_function
 import random
 
 # third-party imports
-import colorama
 
 # local imports
-from utils import validate_python_version
-from decorate import read_only
-from classes import PenaltyCard, Card, Deck, Player
-from config import MIN_FACE_VALUE, MAX_FACE_VALUE, MIN_SUIT, MIN_PLAYERS, MAX_PLAYERS
-
-card_strings = {}
-for face_value in range(MIN_FACE_VALUE, MAX_FACE_VALUE + 1):
-	for suit in range(MIN_SUIT, MAX_SUIT + 1):
-		card_id = '{}-{}'.format(face_value, suit)
-		import_path = 'data.pystring.{}'.format(card_id)
-		module = __import__(import_path, fromlist=[''])
-		card_strings[card_id] = module.s
-
-def is_penalty_card(card):
-	if card is None:
-		raise ValueError
-	return 
+from lib.classes import PenaltyCard, Card, Deck, Player
+from lib.config import MIN_FACE_VALUE, MAX_FACE_VALUE, MIN_SUIT, MAX_SUIT, MIN_PLAYERS, MAX_PLAYERS
+from data.image_strings import card_image_strings
 
 def output_scoreboard(players):
 	output = 'And the current rankings are...(drumroll please)...\n'
@@ -132,11 +115,3 @@ def game():
 	while not has_winner(players):
 		round(deck, players)
 	winner = leader(players)
-
-if __name__ == '__main__':
-	# TODO: possibly make a 'main.py' which does the manage python version, or maybe not
-	validate_python_version()
-	# make color codes work on windows too
-	colorama.init()
-	# finally, play!
-	game()

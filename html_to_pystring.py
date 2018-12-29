@@ -40,7 +40,7 @@ def html_to_pystring(in_path, out_path):
 
 def main():
 	in_dir_path = 'html'
-	out_dir_path = 'pystring'
+	out_path = 'pystring'
 	for in_file_name in os.listdir(in_dir_path):
 		card_id = ...
 		out_file_name = '{}.py'.format(card_id)
