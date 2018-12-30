@@ -18,11 +18,11 @@ There is also a `data` folder that stores images and their corresponding generat
 
 ## Installation
 
-TLDR: Dependencies are
+The dependencies are
 
-  * **[Python 3.7](https://www.python.org/downloads/release/python-372/)**
-  * [colorama](https://pypi.org/project/colorama/#files)
-  * [sty](https://github.com/feluxe/sty)
+  * **[Python 3.7](https://www.python.org/downloads/release/python-372/)** (sty requires python 3.5 or above)
+  * [sty](https://github.com/feluxe/sty) (used to color text and ascii images in the terminal)
+  * [colorama](https://pypi.org/project/colorama/#files) (used to extend color support to Windows)
 
 
 
