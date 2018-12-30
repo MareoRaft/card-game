@@ -69,7 +69,7 @@ class Deck:
 	""" A deck of cards. """
 	def __init__(self, cards):
 		""" A 'new' deck is basically a list of cards (the `cards` given).  They are intentionally *not* shuffled on init because you might want your deck to be in a specific order. """
-		self._original_cards = cards
+		self._original_cards = list(cards)
 		self.replenish()
 
 	def replenish(self):

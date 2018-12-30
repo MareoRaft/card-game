@@ -1,16 +1,8 @@
-2. move classes into own file
 1. tree of project structure
 3. quick explanation of project structure
 4. maybe awesome picture of queen art?
 
-  * change 'suit' to 'suit value'
-  * put error messages (face val, suit) into their own file
-  * use the key= option in sort() function for cleaner sorting
-  * have a descending_players function that returns the players in order of their score
-  * list(reversed(sorted((p.score, p) for p in players)))
-TypeError: '<' not supported between instances of 'Player' and 'Player' (should be solved by sort above)
-  * maybe the same but for card too
   * get rid of the period after the cards
-  * make a colorful python prompt (>>>) in blue, orange, red; using the colors from the Queen card
-  * make default color blue for everthing else
   * use a prompt module!
+  * scale down images (vertical squish) using PIL immediately after cropping so they don't appear stretched out
+  * make sure colors work on a black terminal (you may need to use the sty.bg.white to simplify this)

@@ -15,7 +15,7 @@ def validate_python_version():
 blue = fg(26, 20, 127)
 gold = fg(248, 194, 15)
 red = fg(230, 20, 8)
-string_prompt = '{}>{}>{}>{} '.format(red, gold, blue, red)
+string_prompt = '{}>{}>{}>{} '.format(blue, gold, red, blue)
 
 def print_pretty(string):
 	string_pretty = '\n{}{}'.format(blue, string)
