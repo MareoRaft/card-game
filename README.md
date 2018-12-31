@@ -25,6 +25,11 @@ The dependencies are
   * [colorama](https://pypi.org/project/colorama/#files)  (used to extend color support to Windows)
   * [iTerm2](https://www.iterm2.com)  (this is *not* a dependency, but if you have issues with color support, I would recommend trying the program in this terminal)
 
+Once you have python 3 installed, you should be able to install sty and colorama into your python 3 library with, for example,
+
+	cd card-game-matthew-lancellotti
+    python3 $(which pip) install -r requirements.txt
+
 
 
 ## Usage
@@ -34,5 +39,4 @@ Simply run the `main.py` script.  For example:
     cd card-game-matthew-lancellotti
     ./main.py
 
-
-
+![Next round.  It's Matt's turn!  press RETURN to draw.  Matt draws the king of diamonds.](usage-screenshot.png)
