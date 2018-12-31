@@ -12,7 +12,7 @@ Welcome!  The project structure is primarily:
 	│   └── validate.py  -->  error messages and input validation
 	└── main.py  -->  kicks off the entire program
 
-There is also a `data` folder that stores images and their corresponding generated ascii image strings.  The scripts `crop.py` and `html_to_pystring.py` automate part of the image generation.  The generate ascii image strings are checked into the repository, so there is no need to rebuild them, but feel free to look at the scripts if you so please.
+There is also a `data` folder that stores images and their corresponding generated "ascii image strings".  The scripts `crop.py` and `html_to_pystring.py` automate part of the image generation.  The generated strings are checked into the repository (`data/strings/image_strings.py`), so there is no need to rebuild them, but feel free to look at the scripts if you so please.
 
 
 
