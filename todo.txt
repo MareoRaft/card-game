@@ -1,6 +1,4 @@
-4. maybe awesome picture of queen art?
 
-  * get rid of the period after the cards
-  * use a prompt module!
-  * scale down images (vertical squish) using PIL immediately after cropping so they don't appear stretched out
-  * make sure colors work on a black terminal (you may need to use the sty.bg.white to simplify this)
+  * scale down images (vertical squish) using PIL immediately after cropping so they don't appear stretched out (actually it looks nice though)
+  * make sure colors work on a black terminal (you may need to use the sty.bg.white to simplify this)  (the clubs and spades are a bit hard to see, but it still looks nice)
+

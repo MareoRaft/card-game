@@ -4,34 +4,33 @@
 
 # local imports
 from lib.config import NUM_PENALTY_CARDS, MIN_FACE_VALUE, MAX_FACE_VALUE, MIN_SUIT_VALUE, MAX_SUIT_VALUE, MIN_PLAYERS, MAX_PLAYERS
-from lib.utils import input_pretty, print_pretty
 from lib.classes import PenaltyCard, Card, Deck, Player
 from lib import validate
+from lib.utils import prompt
 
 def output_scoreboard(players):
-	input_pretty('And the current rankings are...(drumroll please)...\npress RETURN to continue')
+	prompt.input('And the current rankings are...(drumroll please)...\npress RETURN to continue')
 	output = ''
 	descending_players = get_descending_players(players)
 	for index, player in enumerate(descending_players):
 		rank = index + 1
 		output += '{}. {}, with a score of {}\n'.format(rank, player.name, player.score)
-	print_pretty(output)
+	prompt.output(output)
 
 def turn(deck, player, players):
 	# player must press a key to draw card
-	input_pretty('It\'s {}\'s turn!\npress RETURN to draw'.format(player.name))
+	prompt.input('It\'s {}\'s turn!\npress RETURN to draw'.format(player.name))
 	# draw card
 	try:
 		card = deck.draw()
 	except IndexError:
-		# in the rare case that the deck is empty, take the discard pile and shuffle it
-		print_pretty('reshuffling the discard pile...')
-		discarded_cards = set(deck._original_cards) - set(p.card for p in players)
-		deck.__init__(discarded_cards)
+		# in the rare case that the deck is empty, reset the deck.  This could lead to two players drawing the exact same card, which wouldn't happen in a *real* game of cards.  But this isn't really a big deal.
+		prompt.output('shuffling a new deck...')
+		deck.replenish()
 		deck.shuffle()
 		card = deck.draw()
 	# show the card for all to see
-	print_pretty('{} draws card\n{}'.format(player.name, card))
+	prompt.output('{} draws card\n{}'.format(player.name, card))
 	# put card in hand 
 	player.draw(card)
 
@@ -52,7 +51,7 @@ def adjust_player_scores(players):
 
 def round(deck, players):
 	""" A round consists of each player drawing a card and then a scoreboard update. """
-	print_pretty('Next round.')
+	prompt.output('Next round.')
 	# each player draws a card from the deck
 	for player in players:
 		turn(deck, player, players)
@@ -66,22 +65,12 @@ def round(deck, players):
 
 def input_num_players():
 	# set the number of players
-	while True:
-		try:
-			num_players = int(input_pretty('How many players?'))
-			validate.num_players(num_players)
-			return num_players
-		except Exception as error_message:
-			print(error_message)
+	return prompt.input('How many players?', request_type=int, validator=validate.num_players)
 
 def input_player(num):
 	# setup a player
-	while True:
-		try:
-			name = str(input_pretty('What is player {}\'s name?'.format(num)))
-			return Player(name)
-		except Exception as error_message:
-			print(error_message)
+	input_message = 'What is player {}\'s name?'.format(num)
+	return prompt.input(input_message, converter=Player)
 
 def get_descending_players(players):
 	# returns players sorted, highest first
@@ -115,4 +104,4 @@ def game():
 	while not has_winner(players):
 		round(deck, players)
 	winner = get_descending_players(players)[0]
-	print_pretty('The winner is {}!!!'.format(winner))
+	prompt.output('The winner is {}!!!'.format(winner.name))

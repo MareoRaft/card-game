@@ -1,4 +1,5 @@
 import random
+from copy import deepcopy
 
 from lib.decorate import read_only
 from lib import validate
@@ -11,11 +12,11 @@ class PenaltyCard:
 		""" Pretty string version of the card for the user. """
 		# I chose the Joker image for the penalty card.
 		return card_image_strings['joker']
-	
+
 
 class Card:
+	""" A card, which consists of a suit and a face-value.  A card is just a glorification of the pair `(self.face_value, self.suit_value)`. """
 	def __init__(self, face_value, suit_value):
-		""" `face_value` is any integer from 2 to 14, inclusive.  `suit_value` is any integer from 1 to 4, inclusive. """
 		self.face_value = face_value
 		self.suit_value = suit_value
 
@@ -26,6 +27,7 @@ class Card:
 
 	@property
 	def face_value(self):
+		""" For example, a 2 of spades has a face value of 2, jack has face value 11, and ace has face value of 14. """
 		return self._face_value
 	@face_value.setter
 	@read_only
@@ -36,16 +38,15 @@ class Card:
 
 	@property
 	def suit_value(self):
+		""" A suit value is a number assigned to a suit. """
 		return self._suit_value
 	@suit_value.setter
 	@read_only
 	def suit_value(self, new_suit_value):
-		# club is 1, diamond is 2, heart 3, spade 4
 		validate.suit_value(new_suit_value)
 		self._suit_value = new_suit_value
 
-	# implement an ordering on the cards
-	# i wonder if there's a nicer way to do this, like saying "standard ordering on (self.face_value, self.suit_value)"
+	# implement a linear ordering on the cards
 	def __eq__(self, other):
 		return (self.face_value, self.suit_value) == (other.face_value, other.suit_value)
 
@@ -74,7 +75,7 @@ class Deck:
 
 	def replenish(self):
 		""" Restore the deck to its original state. """
-		self._cards = self._original_cards
+		self._cards = deepcopy(self._original_cards)
 
 	def shuffle(self):
 		""" Shuffles the cards currently in the deck with uniform probability. """

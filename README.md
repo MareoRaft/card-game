@@ -30,6 +30,8 @@ Once you have python 3 installed, you should be able to install sty and colorama
 	cd card-game-matthew-lancellotti
     python3 $(which pip) install -r requirements.txt
 
+Unfortunately color support is a little dodgy on various terminals.  If you have any issues, please don't hesitate to contact me.
+
 
 
 ## Usage
