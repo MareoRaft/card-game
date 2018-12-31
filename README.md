@@ -26,7 +26,7 @@ The dependencies are
 
 Once you have python 3 installed, you should be able to install sty and colorama into your python 3 library with, for example,
 
-	card-game-matthew-lancellotti
+	cd card-game-matthew-lancellotti
     python3 $(which pip) install -r requirements.txt
 
 
