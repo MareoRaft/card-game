@@ -20,9 +20,10 @@ There is also a `data` folder that stores images and their corresponding generat
 
 The dependencies are
 
-  * **[Python 3.7](https://www.python.org/downloads/release/python-372/)** (sty requires python 3.5 or above)
-  * [sty](https://github.com/feluxe/sty) (used to color text and ascii images in the terminal)
-  * [colorama](https://pypi.org/project/colorama/#files) (used to extend color support to Windows)
+  * **[Python 3.7](https://www.python.org/downloads/release/python-372/)**  (sty requires python 3.5 or above)
+  * [sty](https://github.com/feluxe/sty)  (used to color text and ascii images in the terminal)
+  * [colorama](https://pypi.org/project/colorama/#files)  (used to extend color support to Windows)
+  * [iTerm2](https://www.iterm2.com)  (this is *not* a dependency, but if you have issues with color support, I would recommend trying the program in this terminal)
 
 
 
