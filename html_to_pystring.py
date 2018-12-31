@@ -27,13 +27,17 @@ def html_to_pystring(html):
 		r" \+ </span></code>'\\n' \+ ",
 		r' + Style.RESET_ALL',
 		string)
-	## condense white things to save space
-	string = re.sub(r"""fg\(255, 255, 255\)""", "fg.white", string)
+	## condense everything to save space
 	for _ in range(9):
 		string = re.sub(
-			r"""fg\.white \+ '([^']+)' \+ fg\.white \+ '([^']+)'""",
-			r"fg.white + '\1\2'",
+			r"""(fg\(\d{1,3}, \d{1,3}, \d{1,3}\)) \+ '([^']+)' \+ \1 \+ '([^']+)'""",
+			r"\1 + '\2\3'",
 			string)
+	## condense white things to save space
+	string = re.sub(r"""fg\(255, 255, 255\)""", "fg.white", string)
+	## condense black things to save space
+	string = re.sub(r"""fg\(0, 0, 0\)""", "fg.black", string)
+
 	# output
 	return string
 
@@ -44,7 +48,7 @@ def main():
 	header = 'import colorama\nfrom colorama import Fore, Back, Style\nfrom sty import fg, bg, ef, rs, Rule, Render\n\ncolorama.init()\n\ncard_image_strings = dict()\n\n'
 	open(out_path, 'w').write(header)
 	# generate the strings and write them to the file
-	for in_file_name in os.listdir(in_dir_path):
+	for in_file_name in sorted(os.listdir(in_dir_path)):
 		card_id, ext = path.splitext(in_file_name)
 		if ext == '.html':
 			in_file_path = path.join(in_dir_path, in_file_name)
