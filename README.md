@@ -1,6 +1,6 @@
 ## About
 
-Welcome!  For this project, I used the object-oriented approach.  The project structure looks like:
+Welcome!  The project structure is primarily:
 
 	.
 	├── lib
@@ -25,7 +25,7 @@ The dependencies are
   * [colorama](https://pypi.org/project/colorama/#files)  (used to extend color support to Windows)
   * [iTerm2](https://www.iterm2.com)  (this is *not* a dependency, but if you have issues with color support, I would recommend trying the program in this terminal)
 
-Once you have python 3 installed, you should be able to install sty and colorama into your python 3 library with, for example,
+Once you have python 3 installed, you should be able to install sty and colorama into your python 3 library with
 
 	cd card-game-matthew-lancellotti
     python3 $(which pip) install -r requirements.txt
@@ -34,7 +34,7 @@ Once you have python 3 installed, you should be able to install sty and colorama
 
 ## Usage
 
-Simply run the `main.py` script.  For example:
+Run the `main.py` script.  For example:
 
     cd card-game-matthew-lancellotti
     ./main.py
