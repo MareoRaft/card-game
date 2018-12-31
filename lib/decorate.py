@@ -1,6 +1,7 @@
 """ Useful decorators.  The `transparent` decorator is taken from https://wiki.python.org/moin/PythonDecoratorLibrary.
 """
 
+
 def transparent(decorator):
     """ Decorators have a few unwanted side effects.  This decorator, when used on a decorator, reverses those side-effects!
 
@@ -27,6 +28,7 @@ def transparent(decorator):
     new_decorator.__dict__.update(decorator.__dict__)
     return new_decorator
 
+
 @transparent
 def read_only(func):
     """ Allows a property to only be set ONCE.  After that, it cannot be set again.  Usage:
@@ -42,10 +44,12 @@ def read_only(func):
         def v(self, new_value):
             self._v = new_value
     """
+
     def new_func(self, *args, **kwargs):
         secret_attr_name = func.__name__ + "_read_only_property_set"
         if hasattr(self, secret_attr_name):
-            raise Exception('This property is read-only.  It can only be set ONCE, and has already been set.')
+            raise Exception(
+                'This property is read-only.  It can only be set ONCE, and has already been set.')
         else:
             out = func(self, *args, **kwargs)
             setattr(self, secret_attr_name, True)

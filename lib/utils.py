@@ -19,6 +19,7 @@ prompt = Prompt(input_prefix='{}>{}>{}>{} '.format(light_blue, gold, red, light_
                 output_prefix='\n{}'.format(light_blue),
                 warn_prefix=red)
 
+
 def validate_python_version():
     if sys.version_info[0] < 3 or (sys.version_info[0] == 3 and sys.version_info[1] < 7):
         raise SystemExit('Please use Python version >= 3.7.')

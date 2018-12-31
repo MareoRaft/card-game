@@ -5,6 +5,7 @@ import re
 
 ITERABLES = [list, set, tuple, frozenset]
 
+
 def split_by_newline(string, strip):
     strings = []
     for split_string in re.split(r"\n", string):
@@ -13,19 +14,23 @@ def split_by_newline(string, strip):
         strings.append(split_string)
     return strings
 
+
 def it(*li):
     # returns a func that itself returns each element of li each time it is called, in order, one each time
     def gen_func():
         for el in li:
             yield el
     gen = gen_func()
-    def it_func(*args, **kwargs): # both of which are purposefully ignored
+
+    def it_func(*args, **kwargs):  # both of which are purposefully ignored
         return next(gen)
     return it_func
+
 
 def prepare_new_validator(new_validator):
     if isinstance(new_validator, list):
         list_of_valid_inputs = new_validator
+
         def validator(val):
             if not val in list_of_valid_inputs:
                 raise ValueError
@@ -34,6 +39,7 @@ def prepare_new_validator(new_validator):
         return new_validator
     else:
         raise TypeError('validator should be a list or callable')
+
 
 class Prompt:
     def __init__(self, strip=True, request_type=str, validator=lambda x: True, tries=99, converter=None, input_prefix='', output_prefix='', warn_prefix=''):
@@ -63,7 +69,7 @@ class Prompt:
     def _iterable_converter(self, in_str, request_type, strip):
         if in_str:
             strings = split_by_newline(in_str, strip)
-        else: # empty string
+        else:  # empty string
             strings = ''
         return request_type(strings)
 
@@ -130,7 +136,8 @@ class Prompt:
                 # convert input and check type
                 converted_input = self._converter(in_str, request_type, strip)
                 if not isinstance(converted_input, request_type):
-                    self.warn('Invalid input: your input is not of type "{}"'.format(request_type))
+                    self.warn(
+                        'Invalid input: your input is not of type "{}"'.format(request_type))
                     continue
                 # run user inputted converter if there is one
                 if converter is not None:
@@ -146,4 +153,3 @@ class Prompt:
         if not proceed:
             raise Exception('Too many bad inputs.')
         return converted_input
-

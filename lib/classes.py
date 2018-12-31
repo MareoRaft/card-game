@@ -8,6 +8,7 @@ from data.strings.image_strings import card_image_strings
 
 class PenaltyCard:
     """ A penalty card. """
+
     def __str__(self):
         """ Pretty string version of the card for the user. """
         # I chose the Joker image for the penalty card.
@@ -16,6 +17,7 @@ class PenaltyCard:
 
 class Card:
     """ A card, which consists of a suit and a face-value.  A card is just a glorification of the pair `(self.face_value, self.suit_value)`. """
+
     def __init__(self, face_value, suit_value):
         self.face_value = face_value
         self.suit_value = suit_value
@@ -29,6 +31,7 @@ class Card:
     def face_value(self):
         """ For example, a 2 of spades has a face value of 2, jack has face value 11, and ace has face value of 14. """
         return self._face_value
+
     @face_value.setter
     @read_only
     def face_value(self, new_face_value):
@@ -40,6 +43,7 @@ class Card:
     def suit_value(self):
         """ A suit value is a number assigned to a suit. """
         return self._suit_value
+
     @suit_value.setter
     @read_only
     def suit_value(self, new_suit_value):
@@ -68,6 +72,7 @@ class Card:
 
 class Deck:
     """ A deck of cards. """
+
     def __init__(self, cards):
         """ A 'new' deck is basically a list of cards (the `cards` given).  They are intentionally *not* shuffled on init because you might want your deck to be in a specific order. """
         self._original_cards = list(cards)
