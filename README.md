@@ -24,6 +24,11 @@ The dependencies are
   * [sty](https://github.com/feluxe/sty) (used to color text and ascii images in the terminal)
   * [colorama](https://pypi.org/project/colorama/#files) (used to extend color support to Windows)
 
+Once you have python 3 installed, you should be able to install sty and colorama into your python 3 library with, for example,
+
+	card-game-matthew-lancellotti
+    python3 $(which pip) install -r requirements.txt
+
 
 
 ## Usage
