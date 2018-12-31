@@ -13,12 +13,13 @@ def validate_python_version():
 		raise SystemExit('Please use Python version >= 3.7.')
 
 blue = fg(26, 20, 127)
+light_blue = fg(45, 120, 255)
 gold = fg(248, 194, 15)
 red = fg(230, 20, 8)
-string_prompt = '{}>{}>{}>{} '.format(blue, gold, red, blue)
+string_prompt = '{}>{}>{}>{} '.format(light_blue, gold, red, light_blue)
 
 def print_pretty(string):
-	string_pretty = '\n{}{}'.format(blue, string)
+	string_pretty = '\n{}{}'.format(light_blue, string)
 	print(string_pretty)
 
 def input_pretty(string):

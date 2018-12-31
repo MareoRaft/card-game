@@ -33,5 +33,4 @@ Simply run the `main.py` script.  For example:
     cd card-game-matthew-lancellotti
     ./main.py
 
-
-
+![Next round.  It's Matt's turn!  press RETURN to draw.  Matt draws the king of diamonds.](usage-screenshot.png)

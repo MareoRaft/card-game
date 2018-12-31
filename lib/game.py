@@ -56,7 +56,7 @@ def round(deck, players):
 	# each player draws a card from the deck
 	for player in players:
 		turn(deck, player, players)
-s	# adjust player scores
+	# adjust player scores
 	adjust_player_scores(players)
 	# discard hands
 	for player in players:
