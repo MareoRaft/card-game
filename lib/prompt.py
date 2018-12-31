@@ -69,7 +69,7 @@ class Prompt:
     def _iterable_converter(self, in_str, request_type, strip):
         if in_str:
             strings = split_by_newline(in_str, strip)
-        else:  # empty string
+        else:   # empty string
             strings = ''
         return request_type(strings)
 
