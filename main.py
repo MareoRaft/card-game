@@ -10,8 +10,8 @@ import colorama
 from lib.game import game
 
 if __name__ == '__main__':
-	validate_python_version()
-	# make color codes work on windows too
-	colorama.init()
-	# finally, play!
-	game()
+    validate_python_version()
+    # make color codes work on windows too
+    colorama.init()
+    # finally, play!
+    game()
