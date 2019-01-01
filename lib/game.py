@@ -3,38 +3,37 @@
 # third-party imports
 
 # local imports
-from lib.config import NUM_PENALTY_CARDS, MIN_FACE_VALUE, MAX_FACE_VALUE, MIN_SUIT_VALUE, MAX_SUIT_VALUE, MIN_PLAYERS, MAX_PLAYERS
+from lib.config import NUM_PENALTY_CARDS, MIN_FACE_VALUE, MAX_FACE_VALUE, MIN_SUIT_VALUE, MAX_SUIT_VALUE, MIN_PLAYERS, MAX_PLAYERS, PROMPT
 from lib.classes import PenaltyCard, Card, Deck, Player
 from lib import validate
-from lib.utils import prompt
 
 
 def output_scoreboard(players):
-    prompt.input(
-        'And the current rankings are...(drumroll please)...\npress RETURN to continue')
+    PROMPT.input(
+        'And the current rankings are...drumroll please...\npress RETURN to continue')
     output = ''
     descending_players = get_descending_players(players)
     for index, player in enumerate(descending_players):
         rank = index + 1
         output += '{}. {}, with a score of {}\n'.format(
             rank, player.name, player.score)
-    prompt.output(output)
+    PROMPT.output(output)
 
 
 def turn(deck, player, players):
     # player must press a key to draw card
-    prompt.input('It\'s {}\'s turn!\npress RETURN to draw'.format(player.name))
+    PROMPT.input('It\'s {}\'s turn!\npress RETURN to draw'.format(player.name))
     # draw card
     try:
         card = deck.draw()
     except IndexError:
         # in the rare case that the deck is empty, reset the deck.  This could lead to two players drawing the exact same card, which wouldn't happen in a *real* game of cards.  But this isn't really a big deal.
-        prompt.output('shuffling a new deck...')
+        PROMPT.output('shuffling a new deck...')
         deck.replenish()
         deck.shuffle()
         card = deck.draw()
     # show the card for all to see
-    prompt.output('{} draws card\n{}'.format(player.name, card))
+    PROMPT.output('{} draws card\n{}'.format(player.name, card))
     # put card in hand
     player.draw(card)
 
@@ -58,7 +57,7 @@ def adjust_player_scores(players):
 
 def round(deck, players):
     """ A round consists of each player drawing a card and then a scoreboard update. """
-    prompt.output('Next round.')
+    PROMPT.output('Next round.')
     # each player draws a card from the deck
     for player in players:
         turn(deck, player, players)
@@ -73,13 +72,13 @@ def round(deck, players):
 
 def input_num_players():
     # set the number of players
-    return prompt.input('How many players?', request_type=int, validator=validate.num_players)
+    return PROMPT.input('How many players?', request_type=int, validator=validate.num_players)
 
 
 def input_player(num):
     # setup a player
     input_message = 'What is player {}\'s name?'.format(num)
-    return prompt.input(input_message, converter=Player)
+    return PROMPT.input(input_message, converter=Player)
 
 
 def get_descending_players(players):
@@ -117,4 +116,4 @@ def game():
     while not has_winner(players):
         round(deck, players)
     winner = get_descending_players(players)[0]
-    prompt.output('The winner is {}!!!'.format(winner.name))
+    PROMPT.output('The winner is {}!!!'.format(winner.name))

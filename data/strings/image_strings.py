@@ -1,8 +1,6 @@
-import colorama
-from colorama import Fore, Back, Style
-from sty import fg, bg, ef, rs, Rule, Render
+from colorama import Style
+from sty import fg
 
-colorama.init()
 
 card_image_strings = dict()
 

@@ -1,5 +1,12 @@
 # This module is for validation / error checking.  Within this project, to 'validate' means to check that inputs are good and emit an error otherwise.  So almost all errors that occur should happen in this file.
+import sys
+
 from lib.config import MIN_FACE_VALUE, MAX_FACE_VALUE, MIN_SUIT_VALUE, MAX_SUIT_VALUE, MIN_PLAYERS, MAX_PLAYERS
+
+
+def python_version():
+    if sys.version_info[0] < 3 or (sys.version_info[0] == 3 and sys.version_info[1] < 5):
+        raise SystemExit('Please use Python version >= 3.5.')
 
 
 def face_value(value):

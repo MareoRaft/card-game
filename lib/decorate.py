@@ -44,7 +44,6 @@ def read_only(func):
         def v(self, new_value):
             self._v = new_value
     """
-
     def new_func(self, *args, **kwargs):
         secret_attr_name = func.__name__ + "_read_only_property_set"
         if hasattr(self, secret_attr_name):

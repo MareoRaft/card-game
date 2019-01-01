@@ -47,7 +47,7 @@ def main():
     in_dir_path = 'data/html'
     out_path = 'data/strings/image_strings.py'
     # write the top of the file
-    header = 'import colorama\nfrom colorama import Fore, Back, Style\nfrom sty import fg, bg, ef, rs, Rule, Render\n\ncolorama.init()\n\ncard_image_strings = dict()\n\n'
+    header = 'from colorama import Style\nfrom sty import fg\n\n\ncard_image_strings = dict()\n\n'
     open(out_path, 'w').write(header)
     # generate the strings and write them to the file
     for in_file_name in sorted(os.listdir(in_dir_path)):
