@@ -1,4 +1,8 @@
-## About
+# Card Game
+A coding challenge submission that uses Python to create an interactive card game in the terminal.
+
+![](usage-screenshot.png)
+
 
 Welcome!  The project structure is primarily:
 
